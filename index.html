@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>駅天気アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="map-panel" aria-labelledby="map-title">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">Station Weather</p>
+                    <h1 id="map-title">駅天気アプリ</h1>
+                </div>
+                <div class="legend" aria-label="路線凡例">
+                    <span><i class="legend-dot yamanote"></i>山手線</span>
+                    <span><i class="legend-dot chuo"></i>中央線</span>
+                    <span><i class="legend-dot sobu"></i>総武線各停</span>
+                    <span><i class="legend-dot yokosuka"></i>横須賀線</span>
+                </div>
+            </div>
+
+            <div class="map-frame">
+                <svg id="route-map" viewBox="0 0 920 620" role="img" aria-labelledby="route-map-title route-map-desc">
+                    <title id="route-map-title">山手線、中央線、総武線各停、横須賀線の模式路線図</title>
+                    <desc id="route-map-desc">駅の丸を選ぶと右側の表示エリアに駅名と選択時間が表示されます。</desc>
+                    <g id="route-lines" transform="translate(20 0)"></g>
+                    <g id="station-layer" transform="translate(20 0)"></g>
+                </svg>
+            </div>
+
+            <p class="credit">Station data API: HeartRails Express</p>
+        </section>
+
+        <aside class="side-panel" aria-label="入力と天気表示">
+            <section class="control-panel" aria-labelledby="control-title">
+                <div class="section-title-row">
+                    <p class="eyebrow">Time</p>
+                    <h2 id="control-title">確認したい時間</h2>
+                </div>
+                <label class="range-label" for="time-range">
+                    <span id="time-label">現在</span>
+                    <strong id="time-datetime"></strong>
+                </label>
+                <input id="time-range" type="range" min="0" max="168" step="1" value="0">
+                <div class="range-scale" aria-hidden="true">
+                    <span>現在</span>
+                    <span>3日後</span>
+                    <span>7日後</span>
+                </div>
+            </section>
+
+            <section class="weather-panel" aria-labelledby="weather-title">
+                <div class="section-title-row">
+                    <p class="eyebrow">Weather</p>
+                    <h2 id="weather-title">駅周辺の天気</h2>
+                </div>
+
+                <div id="empty-state" class="empty-state">
+                    <p class="empty-icon" aria-hidden="true">☀️</p>
+                    <p>路線図から駅を選んでください</p>
+                </div>
+
+                <div id="weather-card" class="weather-card" hidden>
+                    <div class="station-heading">
+                        <div>
+                            <p class="label">選択中の駅</p>
+                            <h3 id="selected-station">-</h3>
+                        </div>
+                        <p id="selected-lines" class="line-tags"></p>
+                    </div>
+
+                    <dl class="weather-list">
+                        <div>
+                            <dt>日時</dt>
+                            <dd id="selected-datetime">-</dd>
+                        </div>
+                        <div>
+                            <dt>天気</dt>
+                            <dd id="weather-summary">未取得</dd>
+                        </div>
+                        <div>
+                            <dt>気温</dt>
+                            <dd id="temperature">--℃</dd>
+                        </div>
+                        <div>
+                            <dt>降水確率</dt>
+                            <dd id="precipitation">--%</dd>
+                        </div>
+                    </dl>
+
+                    <div class="outfit-box">
+                        <p class="label">服装レコメンド</p>
+                        <p id="outfit-recommendation">未取得</p>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
