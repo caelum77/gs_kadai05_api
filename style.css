@@ -36,7 +36,7 @@ input {
 
 .app-shell {
     display: grid;
-    grid-template-columns: minmax(720px, 1fr) 380px;
+    grid-template-columns: minmax(640px, 1fr) 460px;
     gap: 20px;
     min-height: 100vh;
     padding: 22px;
@@ -352,13 +352,13 @@ h2 {
 
 .weather-list dt {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 700;
 }
 
 .weather-list dd {
     margin: 0;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 800;
     text-align: right;
 }
@@ -383,6 +383,6 @@ h2 {
     }
 
     .app-shell {
-        grid-template-columns: minmax(620px, 1fr) 340px;
+        grid-template-columns: minmax(560px, 1fr) 400px;
     }
 }

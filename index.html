@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>駅天気アプリ</title>
+    <title>駅天気アプリLite</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
             <div class="panel-header">
                 <div>
                     <p class="eyebrow">Station Weather</p>
-                    <h1 id="map-title">駅天気アプリ</h1>
+                    <h1 id="map-title">駅天気アプリLite</h1>
                 </div>
                 <div class="legend" aria-label="路線凡例">
                     <span><i class="legend-dot yamanote"></i>山手線</span>
@@ -24,10 +24,10 @@
 
             <div class="map-frame">
                 <svg id="route-map" viewBox="0 0 920 620" role="img" aria-labelledby="route-map-title route-map-desc">
-                    <title id="route-map-title">山手線、中央線、総武線各停、横須賀線の模式路線図</title>
+                    <!-- <title id="route-map-title">山手線、中央線、総武線各停、横須賀線の模式路線図</title> -->
                     <desc id="route-map-desc">駅の丸を選ぶと右側の表示エリアに駅名と選択時間が表示されます。</desc>
-                    <g id="route-lines" transform="translate(20 0)"></g>
-                    <g id="station-layer" transform="translate(20 0)"></g>
+                    <g id="route-lines" transform="translate(50 -72)"></g>
+                    <g id="station-layer" transform="translate(50 -72)"></g>
                 </svg>
             </div>
 

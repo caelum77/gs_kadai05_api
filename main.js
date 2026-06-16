@@ -129,6 +129,117 @@ function drawStations() {
     });
 }
 
+
+
+// ここでheartrailsのAPIを呼び出す。クリックされた駅名から緯度経度情報を取得する
+function handleStationData(data) {
+    const station = data.response.station[0];
+
+    // console.log(station.name);
+    // console.log(station.x);
+    // console.log(station.y);
+
+    return {
+        name: station.name,
+        longitude: Number(station.x),
+        latitude: Number(station.y)
+    };
+}
+
+function fetchStationLocation(stationName) {
+    return $.ajax({
+        url: "https://express.heartrails.com/api/json",
+        dataType: "jsonp",
+        data: {
+            method: "getStations",
+            name: stationName
+        }
+    }).then(handleStationData);
+}
+
+// ここから天気データ
+function handleWeatherData(data) {
+    return {
+        temperature: data.hourly.temperature_2m[state.selectedHour],
+        precipitationProbability: data.hourly.precipitation_probability[state.selectedHour],
+        weatherCode: data.hourly.weather_code[state.selectedHour]
+    };
+}
+
+// open-meteoという天気APIに送る
+function fetchWeather(latitude, longitude) {
+    return $.ajax({
+        url: "https://api.open-meteo.com/v1/forecast",
+        dataType: "json",
+        data: {
+            latitude: latitude,
+            longitude: longitude,
+            hourly: "temperature_2m,precipitation_probability,weather_code",
+            timezone: "Asia/Tokyo",
+            forecast_hours: 169
+        }
+    }).then(handleWeatherData);
+}
+
+
+function fetchWeatherByLocation(location) {
+    return fetchWeather(location.latitude, location.longitude);
+}
+
+// function showWeatherInConsole(weather) {
+//     console.log(weather);
+// }
+
+const WEATHER_CODES = {
+    "0": "快晴",
+    "1": "晴れ",
+    "2": "一部くもり",
+    "3": "くもり",
+    "45": "霧",
+    "48": "霧氷を伴う霧",
+    "51": "弱い霧雨",
+    "53": "霧雨",
+    "55": "強い霧雨",
+    "56": "弱い着氷性の霧雨",
+    "57": "強い着氷性の霧雨",
+    "61": "弱い雨",
+    "63": "雨",
+    "65": "強い雨",
+    "66": "弱い着氷性の雨",
+    "67": "強い着氷性の雨",
+    "71": "弱い雪",
+    "73": "雪",
+    "75": "強い雪",
+    "77": "細かい雪",
+    "80": "弱いにわか雨",
+    "81": "にわか雨",
+    "82": "激しいにわか雨",
+    "85": "弱いにわか雪",
+    "86": "強いにわか雪",
+    "95": "雷雨",
+    "96": "ひょうを伴う雷雨",
+    "99": "激しいひょうを伴う雷雨"
+};
+
+function showWeatherOnScreen(weather) {
+    setWeatherData({
+        summary: WEATHER_CODES[String(weather.weatherCode)] || "不明",
+        temperature: weather.temperature,
+        precipitationProbability: weather.precipitationProbability,
+        outfit: "未設定"
+    });
+}
+
+function updateWeather() {
+    if (!state.selectedStation) {
+        return;
+    }
+
+    fetchStationLocation(state.selectedStation.name)
+        .then(fetchWeatherByLocation)
+        .then(showWeatherOnScreen);
+}
+
 function selectStation(stationName) {
     state.selectedStation = STATIONS.find((station) => station.name === stationName);
     state.weatherData = null;
@@ -141,6 +252,7 @@ function selectStation(stationName) {
     });
 
     renderWeatherCard();
+    updateWeather();
 }
 
 function getSelectedDate() {
@@ -235,6 +347,7 @@ elements.timeRange.on("input", function () {
     state.selectedHour = Number($(this).val());
     state.weatherData = null;
     renderTime();
+    updateWeather();
 });
 
 drawRoutes();
